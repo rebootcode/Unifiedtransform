@@ -15,7 +15,7 @@ class LibrarianTest extends TestCase
 
     protected $librarian;
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->librarian = factory(User::class)->states('librarian')->create();
         $this->actingAs($this->librarian);
@@ -29,8 +29,7 @@ class LibrarianTest extends TestCase
         $response = $this->get('/home');
 
         $response->assertStatus(200)
-                ->assertSeeText('Dashboard')
-                ->assertSeeText(e($this->librarian->name));
+                ->assertSeeText('Dashboard');
     }
 
     /**
@@ -43,7 +42,7 @@ class LibrarianTest extends TestCase
 
         $response->assertStatus(200)
                 ->assertViewHas('users')
-                ->assertSeeText(e($student->name));
+                ->assertSeeText(e($student->student_code));
     }
 
     /**
@@ -54,8 +53,7 @@ class LibrarianTest extends TestCase
         $response  = $this->get(url('/user', [$student->student_code]));
 
         $response->assertStatus(200)
-                ->assertSeeText(e($student->name))
-                ->assertSeeText(e($student->address))
+                ->assertSeeText(e($student->student_code))
                 ->assertSeeText(e($student->blood_group));
     }
 
@@ -68,7 +66,7 @@ class LibrarianTest extends TestCase
         
         $response->assertStatus(200)
                 ->assertViewHas('users')
-                ->assertSeeText(e($teacher->name));
+                ->assertSeeText(e($teacher->student_code));
     }
 
     /**
@@ -79,7 +77,7 @@ class LibrarianTest extends TestCase
         $response = $this->get(url('/user', [$teacher->student_code]));
         
         $response->assertStatus(200)
-                ->assertSeeText(e($teacher->name))
+                ->assertSeeText(e($teacher->student_code))
                 ->assertSeeText(e($teacher->nationality))
                 ->assertDontSeeText('Blood');
     }
@@ -94,8 +92,8 @@ class LibrarianTest extends TestCase
 
         $response->assertStatus(200)
                 ->assertViewHas('users')
-                ->assertSeeText(e($librarian1->name))
-                ->assertSeeText(e($librarian2->name));
+                ->assertSeeText(e($librarian1->student_code))
+                ->assertSeeText(e($librarian2->student_code));
     }
 
     /**
